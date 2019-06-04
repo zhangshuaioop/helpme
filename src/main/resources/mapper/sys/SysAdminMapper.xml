@@ -204,10 +204,21 @@
     <if test="flagEnabled != null">
       and flag_enabled = #{flagEnabled,jdbcType=BIT}
     </if>
-    and username = #{username,jdbcType=VARCHAR}
+    and (username = #{username,jdbcType=VARCHAR} or mobile = #{username,jdbcType=VARCHAR})
   </select>
 
 
+  <!--根据用户名或手机号查询-->
+  <select id="selectUserNameOrMobile" parameterType="com.help.helpme.entity.sys.SysAdmin" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_admin
+    where flag_delete = 0
+    <if test="flagEnabled != null">
+      and flag_enabled = #{flagEnabled,jdbcType=BIT}
+    </if>
+    and username = #{username,jdbcType=VARCHAR} or mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
 
 
   <select id="selectAll" parameterType="com.help.helpme.entity.sys.SysAdmin" resultMap="BaseResultMap">

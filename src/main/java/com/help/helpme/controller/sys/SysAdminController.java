@@ -7,6 +7,7 @@ import com.help.helpme.service.sys.SysAdminService;
 import com.help.helpme.utils.MD5Utils;
 import com.help.helpme.utils.Result;
 import com.help.helpme.utils.ResultUtil;
+import com.help.helpme.utils.ValiDateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 系统用户
@@ -79,16 +81,25 @@ public class SysAdminController {
     @PreAuthorize("hasRole('用户列表')")
     public Result saveOrUpdate(@RequestBody SysAdmin sysAdmin) {
         logger.info("保存/更新用户开始,入参:sysAdmin="+sysAdmin.toString());
+
+        if(!ValiDateUtil.failPhone(sysAdmin.getMobile())){
+            return ResultUtil.errorBusinessMsg("手机号格式错误");
+        }
+
         Date date = new Date();
         sysAdmin.setUpdateDate(date);
 
+        //根据账号或手机号用来校验是否存在
         SysAdmin newSysAdmin = new SysAdmin();
         newSysAdmin.setUsername(sysAdmin.getUsername());
-        if(sysAdminService.findByUserName(newSysAdmin) != null){
-            ResultUtil.errorBusinessMsg("用户名已存在");
-        }
+        newSysAdmin.setMobile(sysAdmin.getMobile());
+        List<SysAdmin> sysAdmins = sysAdminService.findUserNameOrMobile(newSysAdmin);
 
         if(sysAdmin.getId() != null){
+            if(sysAdmins != null && sysAdmins.size() > 1 || sysAdmins != null && sysAdmins.size() > 1){
+                return ResultUtil.errorBusinessMsg("用户名或手机号已存在");
+            }
+
             if(sysAdmin.getPassword() != null && sysAdmin.getPassword().length()>0){
                 sysAdmin.setPassword(MD5Utils.MD5Encode(sysAdmin.getPassword(),"utf-8"));
             }
@@ -97,6 +108,11 @@ public class SysAdminController {
             sysAdminRoleMapper.deleteByAdminId(sysAdmin.getId()); //删除用户角色
 
         }else {
+
+            if(sysAdmins != null && sysAdmins.size() > 0){
+                return ResultUtil.errorBusinessMsg("用户名或手机号已存在");
+            }
+
             sysAdmin.setCreateDate(date);
             sysAdmin.setFlagDelete(false);
             sysAdmin.setPassword(MD5Utils.MD5Encode("123456","utf-8"));

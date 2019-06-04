@@ -44,6 +44,14 @@ public class SysAdminService extends BaseService<SysAdminMapper,SysAdmin> {
         return sysAdminMapper.selectByUserName(sysAdmin);
     }
 
+    /**
+     * 根据用户名或手机号查询
+     * @param sysAdmin
+     * @return
+     */
+    public List<SysAdmin> findUserNameOrMobile(SysAdmin sysAdmin) {
+        return sysAdminMapper.selectUserNameOrMobile(sysAdmin);
+    }
 
     /**
      * 分页用户列表
