@@ -37,11 +37,11 @@ public class SysAdminService extends BaseService<SysAdminMapper,SysAdmin> {
 
     /**
      * 根据用户名查询
-     * @param username
+     * @param sysAdmin
      * @return
      */
-    public SysAdmin findByUserName(String username){
-        return sysAdminMapper.selectByUserName(username);
+    public SysAdmin findByUserName(SysAdmin sysAdmin){
+        return sysAdminMapper.selectByUserName(sysAdmin);
     }
 
 

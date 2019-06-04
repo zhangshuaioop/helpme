@@ -32,7 +32,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        SysAdmin sysAdmin = sysAdminService.findByUserName(username);
+        SysAdmin newSysAdmin = new SysAdmin();
+        newSysAdmin.setUsername(username);
+        newSysAdmin.setFlagEnabled(true);
+        SysAdmin sysAdmin = sysAdminService.findByUserName(newSysAdmin);
 
         if(sysAdmin == null){
             throw new UsernameNotFoundException("用户名："+ username + "不存在！");

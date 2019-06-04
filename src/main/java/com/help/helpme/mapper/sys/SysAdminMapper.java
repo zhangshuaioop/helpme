@@ -9,8 +9,8 @@ public interface SysAdminMapper extends BaseMapper<SysAdmin> {
 
     /**
      * 根据用户名查询
-     * @param userName
+     * @param sysAdmin
      * @return
      */
-    SysAdmin selectByUserName(String userName);
+    SysAdmin selectByUserName(SysAdmin sysAdmin);
 }

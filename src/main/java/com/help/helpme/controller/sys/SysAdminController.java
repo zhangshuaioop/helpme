@@ -81,6 +81,13 @@ public class SysAdminController {
         logger.info("保存/更新用户开始,入参:sysAdmin="+sysAdmin.toString());
         Date date = new Date();
         sysAdmin.setUpdateDate(date);
+
+        SysAdmin newSysAdmin = new SysAdmin();
+        newSysAdmin.setUsername(sysAdmin.getUsername());
+        if(sysAdminService.findByUserName(newSysAdmin) != null){
+            ResultUtil.errorBusinessMsg("用户名已存在");
+        }
+
         if(sysAdmin.getId() != null){
             if(sysAdmin.getPassword() != null && sysAdmin.getPassword().length()>0){
                 sysAdmin.setPassword(MD5Utils.MD5Encode(sysAdmin.getPassword(),"utf-8"));
