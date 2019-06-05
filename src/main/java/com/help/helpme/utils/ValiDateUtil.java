@@ -31,4 +31,31 @@ public class ValiDateUtil {
     }
 
 
+    /**
+     * 2.   论坛注册用户名验证
+     必须以字母开头
+     只能包括 字母 , 下划线 , 数字
+     长度必须在6 到 10 之间
+
+     */
+    public static boolean failUsername(String username)
+    {
+        //String regex="[a-zA-Z][0-9a-zA-Z_]{5,9}";
+        //String regex="[a-zA-Z][\\da-zA-Z_]{5,9}";// \d  要转成 \\d
+        String regex="[a-zA-Z]\\w{5,9}";
+        return username.matches(regex);
+    }
+
+
+    /**
+     * 身份证验证
+     身份证号码必须为15位或18位数字
+     */
+    public static boolean failIdentity(String identity)
+    {
+        String regex="\\d{15}|\\d{18}|\\d{17}X";
+        return identity.matches(regex);
+    }
+
+
 }

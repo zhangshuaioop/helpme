@@ -82,6 +82,11 @@ public class SysAdminController {
     public Result saveOrUpdate(@RequestBody SysAdmin sysAdmin) {
         logger.info("保存/更新用户开始,入参:sysAdmin="+sysAdmin.toString());
 
+
+        if(!ValiDateUtil.failUsername(sysAdmin.getUsername())){
+            return ResultUtil.errorBusinessMsg("用户名以字母开头只能包括字母,下划线,数字,长度必须在6到10之间");
+        }
+
         if(!ValiDateUtil.failPhone(sysAdmin.getMobile())){
             return ResultUtil.errorBusinessMsg("手机号格式错误");
         }
