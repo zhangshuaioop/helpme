@@ -70,4 +70,16 @@ public class ValiDateUtil {
         return code.matches(regex);
     }
 
+
+    /**
+     * 5.   国际电话号码验证
+     以数字或+开头
+     后面的必须是数字长度在 12 到 13
+     */
+    public static boolean failTel(String tel)
+    {
+        String regex="[+\\d]?\\d{12,13}";
+        return tel.matches(regex);
+    }
+
 }
