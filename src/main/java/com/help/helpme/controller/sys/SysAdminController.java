@@ -101,7 +101,7 @@ public class SysAdminController {
         List<SysAdmin> sysAdmins = sysAdminService.findUserNameOrMobile(newSysAdmin);
 
         if(sysAdmin.getId() != null){
-            if(sysAdmins != null && sysAdmins.size() > 1 || sysAdmins != null && sysAdmins.size() > 1){
+            if(sysAdmins != null && sysAdmins.size() > 1){
                 return ResultUtil.errorBusinessMsg("用户名或手机号已存在");
             }
 

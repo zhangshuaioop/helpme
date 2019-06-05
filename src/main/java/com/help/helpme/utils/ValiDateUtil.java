@@ -58,4 +58,16 @@ public class ValiDateUtil {
     }
 
 
+
+    /**
+     * 1.   验证码必须是数字, 并且是4位数字
+     * @param code
+     */
+    public static boolean failValidCode(String code)
+    {
+        //String regex="[0-9][0-9][0-9][0-9]";
+        String regex="[0-9]{4}";
+        return code.matches(regex);
+    }
+
 }
