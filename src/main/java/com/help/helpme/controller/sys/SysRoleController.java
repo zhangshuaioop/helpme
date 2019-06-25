@@ -62,6 +62,11 @@ public class SysRoleController {
     @PreAuthorize("hasRole('角色列表')")
     public Result saveOrUpdate(@RequestBody SysRole sysRole) {
         logger.info("保存/更新系统角色开始,入参:sysRole="+sysRole.toString());
+
+        if(sysRole==null || sysRole.getName()==null || sysRole.getName().length()<1){
+            return ResultUtil.validateError("请填写名称");
+        }
+
         Date date = new Date();
         sysRole.setUpdateDate(date);
         if(sysRole.getId() != null){
