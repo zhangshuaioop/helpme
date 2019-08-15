@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -79,7 +80,7 @@ public class SysAdminController {
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/saveOrUpdate",method=RequestMethod.POST)
     @PreAuthorize("hasRole('用户列表')")
-    public Result saveOrUpdate(@RequestBody SysAdmin sysAdmin) {
+    public Result saveOrUpdate(@RequestBody @Validated SysAdmin sysAdmin) {
         logger.info("保存/更新用户开始,入参:sysAdmin="+sysAdmin.toString());
 
 

@@ -3,8 +3,11 @@ package com.help.helpme.entity.sys;
 import com.help.helpme.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +24,11 @@ public class SysAdmin extends BaseEntity {
     @ApiModelProperty(value = "密码", example = "1", required = true)
     private String password;
 
+
     @ApiModelProperty(value = "昵称", example = "1", required = true)
+//    @Pattern(regexp="^[-\\+]?[\\d]*$",message = "昵称请填写数字")
+    @Pattern(regexp="[^\\u4e00-\\u9fa5]",message = "不包含中文")
+    @Size(min=6, max=30,message = "昵称长度必须在6~30之间")
     private String nickName;
 
     @ApiModelProperty(value = "部门", example = "1", required = true)

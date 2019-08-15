@@ -217,7 +217,7 @@
     <if test="flagEnabled != null">
       and flag_enabled = #{flagEnabled,jdbcType=BIT}
     </if>
-    and username = #{username,jdbcType=VARCHAR} or mobile = #{mobile,jdbcType=VARCHAR}
+    and (username = #{username,jdbcType=VARCHAR} or mobile = #{mobile,jdbcType=VARCHAR})
   </select>
 
 
