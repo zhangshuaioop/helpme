@@ -7,6 +7,7 @@ public class LoginUser {
 
     private String username;
     private String password;
+    private String smsCode;
     private Integer rememberMe;
 
     public String getUsername() {
@@ -15,6 +16,14 @@ public class LoginUser {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getSmsCode() {
+        return smsCode;
+    }
+
+    public void setSmsCode(String smsCode) {
+        this.smsCode = smsCode;
     }
 
     public String getPassword() {

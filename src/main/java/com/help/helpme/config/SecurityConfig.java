@@ -1,8 +1,10 @@
 package com.help.helpme.config;
 
 import com.help.helpme.JWTAuthenticationEntryPoint;
-import com.help.helpme.filter.JWTAuthenticationFilter;
+import com.help.helpme.filter.JWTSmsCodeAuthenticationFilter;
+import com.help.helpme.filter.JWTUsernamePasswordAuthenticationFilter;
 import com.help.helpme.filter.JWTAuthorizationFilter;
+import com.help.helpme.filter.authenticationpoint.SmsCodeAuthenticationProvider;
 import com.help.helpme.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private SmsCodeAuthenticationProvider smsCodeAuthenticationProvider;
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
@@ -52,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(smsCodeAuthenticationProvider);
         auth.userDetailsService(userDetailsService).passwordEncoder(new Md5PasswordEncoder());
     }
 
@@ -64,7 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").authenticated()
                 // 其他都放行了
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                //账号密码授权filter
+                .addFilter(new JWTUsernamePasswordAuthenticationFilter(authenticationManager()))
+                //验证码授权filter
+                .addFilter(new JWTSmsCodeAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // 不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -82,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 ////                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler) // 自定义访问失败处理器
 ////                .and()
-//                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+//                .addFilter(new JWTUsernamePasswordAuthenticationFilter(authenticationManager()))
 //                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
 //                .logout() // 默认注销行为为logout，可以通过下面的方式来修改
 //                .logoutUrl("/logout")

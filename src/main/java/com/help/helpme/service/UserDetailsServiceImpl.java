@@ -52,4 +52,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new JwtUser(sysAdmin);
     }
 
+
+    /**
+     * 手机号 验证码登录
+     * @param mobile
+     * @param smsCode
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    public UserDetails loadUserByUsernameSmsCode(String mobile,String smsCode) throws UsernameNotFoundException {
+
+        SysAdmin newSysAdmin = new SysAdmin();
+        newSysAdmin.setUsername(mobile);
+        newSysAdmin.setFlagEnabled(true);
+        SysAdmin sysAdmin = sysAdminService.findByUserName(newSysAdmin);
+
+        if(sysAdmin == null){
+            throw new UsernameNotFoundException("用户名："+ mobile + "不存在！");
+        }
+        Collection<SimpleGrantedAuthority> collection = new HashSet<SimpleGrantedAuthority>();
+
+        //查询平台个人权限
+        List<SysAuthorityRes> sysAuthorities = sysAuthorityService.findByAdminId(sysAdmin.getId());
+
+        for (SysAuthorityRes sysAuthoritie: sysAuthorities) {
+            collection.add(new SimpleGrantedAuthority("ROLE_"+sysAuthoritie.getName()));
+        }
+        sysAdmin.setAuthorities(collection);
+        return new JwtUser(sysAdmin);
+    }
+
 }
